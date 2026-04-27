@@ -1,0 +1,15 @@
+{
+  "name": "cami-pestanas-server",
+  "version": "1.0.0",
+  "description": "Servidor de reservas para Cami Pestañas",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "googleapis": "^140.0.0",
+    "dotenv": "^16.3.1"
+  }
+}
