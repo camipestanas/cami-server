@@ -37,24 +37,24 @@ const SERVICE_DURATION = {
   'Perfilado con Pinzas':                 30
 };
 
-// ── Envio de correos con Gmail + Nodemailer ──────────────────────
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS
-  }
-});
-
+// ── Envio de correos con Resend ───────────────────────────────────
 async function sendEmail({ to, subject, html }) {
-  return transporter.sendMail({
-    from: `Cami Pestanas <${process.env.GMAIL_USER}>`,
-    to,
-    subject,
-    html
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: 'Cami Pestanas <onboarding@resend.dev>',
+      to,
+      subject,
+      html
+    })
   });
+  const data = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(data));
+  return data;
 }
 
 function emailCami({ profesional, servicio, fecha, hora, nombre, telefono, precio, nota, descuento }) {
